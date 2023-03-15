@@ -1,18 +1,6 @@
-"use strict";
-class Invoice {
-    constructor(c, d, a) {
-        this.toJson = () => {
-            return {
-                "Client": this.client,
-                "Detail": this.detail,
-                "Amount": this.amount,
-            };
-        };
-        this.client = c;
-        this.detail = d;
-        this.amount = a;
-    }
-}
+import { ListTemplete } from './classes/listTemplete.js';
+import { Invoice } from "./classes/invoice.js";
+import { Payment } from './classes/payment.js';
 const user = "Narin";
 const input = document.querySelectorAll("input");
 const circ = (d) => {
@@ -61,13 +49,19 @@ let form = document.querySelector("form");
 let amount = document.querySelector("#amount");
 form.addEventListener("submit", (e) => {
     e.preventDefault();
-    console.log(type.value, detail.value, toForm.value, amount.valueAsNumber);
+    let doc;
+    let ul = document.querySelector("ul");
+    let list = new ListTemplete(ul);
+    if (type.value == "invoice") {
+        doc = new Invoice(type.value, detail.value, amount.valueAsNumber);
+    }
+    else {
+        doc = new Payment(type.value, detail.value, amount.valueAsNumber);
+    }
+    list.render(doc, type.value, "start");
 });
-let invOne = new Invoice("Rin", "Working on mario website", 230);
-let invTwo = new Invoice("Rong", "Working on ab website", 250);
-let invoices = [];
-invoices.push(invOne);
-invoices.push(invTwo);
-invoices.forEach(v => {
-    console.log(JSON.stringify(v.toJson()));
-});
+// let invOne = new Invoice("Rin", "Working on mario website", 230);
+// let invTwo = new Invoice("Rong", "Working on ab website", 250);
+// let invoices: Invoice[] = [];
+// invoices.push(invOne);
+// invoices.push(invTwo);
